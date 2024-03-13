@@ -136,10 +136,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ORIGIN_WHITELIST = [
-    'https://tinkerquest.onrender.com/api/skus',
-    'https://tinkerquest.onrender.com/api/inventory_items',
-    'https://tinkerquest.onrender.com/api/sales_orders',
-    'https://tinkerquest.onrender.com/api/stock_movements',
-]
+
 
