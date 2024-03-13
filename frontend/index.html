@@ -2,53 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medicas</title>
-
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body id="top">
-  <header class="header" data-header>
-    <div class="container">
-
-      <button class="nav-toggle-btn" data-nav-toggle-btn aria-label="Toggle Menu">
-        <ion-icon name="menu-outline" class="open"></ion-icon>
-        <ion-icon name="close-outline" class="close"></ion-icon>
-      </button>
-
-
-      <nav class="navbar">
-
-        <ul class="navbar-list">
-
-          <li>
-            <a href="#Inventory" class="navbar-link">Inventory</a>
-          </li>
-
-    
-
-          <li>
-            <a href="#SKU" class="navbar-link">SKU</a>
-          </li>
-
-          <li>
-            <a href="#Stocks" class="navbar-link">Stocks</a>
-          </li>
-
-        </ul>
-
-          
-
-        <a href="#" class="btn btn-secondary">Sign In</a>
-
-      </nav>
-
-    </div>
-  </header>
-
+<body>
+    <nav class="navbar">
+        <div class="left">
+            <h1>Medicas</h1>
+        </div>
+        <div class="right">
+            <input type="checkbox" id="check">
+            <label for="check" class="checkBtn">
+                <i class="fa fa-bars"></i>
+            </label>
+            <ul class="list">
+                <li><a href="#">SKU</a></li>
+                <li><a href="#">Inventory</a></li>
+                <li><a href="#">Stocks</a></li>
+                <!-- <li><a href="#">About Us</a></li> -->
+                <li><a href="login.html">SignUp/Login</a></li>
+            </ul>
+        </div>
+        
+    </nav>
   
-
-  <script src="script.js"></script> 
 </body>
 </html>
