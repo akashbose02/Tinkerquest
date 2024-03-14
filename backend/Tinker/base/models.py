@@ -22,6 +22,9 @@ class StockMovement(models.Model):
     quantity_changed = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.item.sku.name} - {self.timestamp}"
+
 class SalesOrder(models.Model):
     items = models.ManyToManyField(InventoryItem)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
