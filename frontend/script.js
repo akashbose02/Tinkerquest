@@ -37,8 +37,22 @@ document.addEventListener('DOMContentLoaded', () => {
         throw new Error('Network response was not ok');
       }
       let data = await response.json();
-      const filteredData = data.filter(item => item.id === 1);
-      displayData(filteredData);
+      // const filteredData = data.filter(item => item.id === 1);
+      console.log(data);
+      const tbody = document.getElementById("fact-body");
+      tbody.innerHTML = null;
+      data.forEach((item)=>{
+        let template = `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.quantity}</td>
+          <td>${item.location}</td>
+          <td>${item.expiry_date}</td>
+          <td></td>
+        </tr>
+        `
+        tbody.innerHTML += template;
+      })
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
     }

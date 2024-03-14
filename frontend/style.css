@@ -4,7 +4,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: #fff;
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -13,6 +12,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    color:#fff;
     line-height: 5rem;
 }
 
@@ -85,9 +85,9 @@
 
 }
 /* Add this CSS to your style.css file */
-p {
+.fetch-btn{
     color: black;
-  }
+}
 /* --------------FOOTER STARTS---------------------- */
 
   @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,500,300,700);
