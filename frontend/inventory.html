@@ -40,7 +40,6 @@
                     <th>Id</th>
                     <th>Quantity</th>
                     <th>Storage</th>
-                    <th>Expiry Date</th>
                     <th>Action</th> 
                 </tr>
             </thead>
@@ -55,6 +54,7 @@
                 .then(response => response.json())
                 .then(data => {
                     populateTable(data);
+                    console.log(data);
                 })
                 .catch(error => {
                     console.error('Error fetching inventory items:', error);
@@ -70,8 +70,7 @@
                 row.innerHTML = `
                     <td>${item.id}</td>
                     <td id="quantity-${item.id}">${item.quantity}</td>
-                    <td>${item.storage}</td>
-                    <td>${item.expiryDate}</td>
+                    <td>${item.location}</td>
                     <td><button class="add-btn" data-id="${item.id}">Add</button></td>
                 `;
                 tableBody.appendChild(row);
@@ -85,28 +84,34 @@
             }
         });
 
-        function incrementQuantity(itemId) {
-            fetch(`https://tinkerquest.onrender.com/api/inventory_items/${itemId}`, {
-                method: 'PATCH', // Use PATCH method to update existing item
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    quantity: 1 // Increment quantity by 1
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Update the quantity displayed on the page
-                var quantityElement = document.getElementById(`quantity-${itemId}`);
-                var currentQuantity = parseInt(quantityElement.textContent);
-                currentQuantity += 1;
-                quantityElement.textContent = currentQuantity;
-            })
-            .catch(error => {
-                console.error('Error incrementing quantity:', error);
-            });
-        }
+        // function incrementQuantity(itemId) {
+        //     fetch(`https://tinkerquest.onrender.com/api/inventory_items/${itemId}`, {
+        //         method: 'POST', // Use PATCH method to update existing item
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             quantity: 1 // Increment quantity by 1
+        //         }),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         // Update the quantity displayed on the page
+        //         var quantityElement = document.getElementById(`quantity-${itemId}`);
+        //         var currentQuantity = parseInt(quantityElement.textContent);
+        //         currentQuantity += 1;
+        //         quantityElement.textContent = currentQuantity;
+        //     })
+        //     .catch(error => {
+        //         console.error('Error incrementing quantity:', error);
+        //     });
+        // }
+
+        const addButton = document.querySelector(".add-btn");
+        addButton.addEventListener("click", ()=>{
+            console.log()
+        })
+
     </script>
 </body>
 </html>
