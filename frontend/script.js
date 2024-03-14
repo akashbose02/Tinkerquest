@@ -1,4 +1,4 @@
-// script.js
+
 document.addEventListener('DOMContentLoaded', () => {
   const state = {};
   let context = null;
@@ -28,3 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   update(); // Initial update on page load
 });
+const url="https://tinkerquest.onrender.com/api/inventory_items";
+fetch(url)
+  .then(response => response.json())
+  .then(data => {
+    // Process the retrieved data
+    console.log(data);
+  })
+  .catch(error => {
+    // Handle any errors that occurred during the request
+    console.error('Error:', error);
+  });
