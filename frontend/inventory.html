@@ -1,57 +1,36 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Items</title>
+    <title>Inventory</title>
 </head>
 <body>
-    <div class="fact">
-        <button id="btn" class="fetch-btn">Show Inventory Items</button>
-        <table id="table-fact">
-            <thead id="fact-head"> 
-                <tr>
-                <th>Id</th>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
                 <th>Quantity</th>
-                <th>Storage</th>
-                <th>Expiry Date</th>
-                </tr>
-            </thead>
-            <tbody id="fact-body">
-            </tbody>
-        </table>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html> -->
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Inventory Management</title>
-</head>
-<body>
-    <div class="fact">
-        <button id="btn" class="fetch-btn">Show Inventory Items</button>
-        <table id="table-fact">
-            <thead id="fact-head"> 
-                <tr>
-                    <th>Id</th>
-                    <th>Quantity</th>
-                    <th>Storage</th>
-                    <th>Action</th> 
-                </tr>
-            </thead>
-            <tbody id="fact-body">
-            </tbody>
-        </table>
-    </div>
+                <th>Location</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="fact-body"></tbody>
+    </table>
 
     <script>
-        document.getElementById("btn").addEventListener("click", function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchInventoryItems();
+        });
+
+        function fetchInventoryItems() {
             fetch('https://tinkerquest.onrender.com/api/inventory_items')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     populateTable(data);
                     console.log(data);
@@ -59,7 +38,7 @@
                 .catch(error => {
                     console.error('Error fetching inventory items:', error);
                 });
-        });
+        }
 
         function populateTable(inventoryItems) {
             var tableBody = document.getElementById("fact-body");
@@ -75,43 +54,44 @@
                 `;
                 tableBody.appendChild(row);
             });
+
+            // Add event listeners to the newly created buttons
+            document.querySelectorAll(".add-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    var itemId = button.getAttribute("data-id");
+                    incrementQuantity(itemId);
+                });
+            });
         }
 
-        document.addEventListener("click", function(event) {
-            if (event.target.classList.contains("add-btn")) {
-                var itemId = event.target.getAttribute("data-id");
-                incrementQuantity(itemId);
-            }
-        });
+        function incrementQuantity(itemId) {
+            var quantityElement = document.getElementById(`quantity-${itemId}`);
+            var currentQuantity = parseInt(quantityElement.textContent);
+            currentQuantity += 1;
+            quantityElement.textContent = currentQuantity;
 
-        // function incrementQuantity(itemId) {
-        //     fetch(`https://tinkerquest.onrender.com/api/inventory_items/${itemId}`, {
-        //         method: 'POST', // Use PATCH method to update existing item
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             quantity: 1 // Increment quantity by 1
-        //         }),
-        //     })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         // Update the quantity displayed on the page
-        //         var quantityElement = document.getElementById(`quantity-${itemId}`);
-        //         var currentQuantity = parseInt(quantityElement.textContent);
-        //         currentQuantity += 1;
-        //         quantityElement.textContent = currentQuantity;
-        //     })
-        //     .catch(error => {
-        //         console.error('Error incrementing quantity:', error);
-        //     });
-        // }
-
-        const addButton = document.querySelector(".add-btn");
-        addButton.addEventListener("click", ()=>{
-            console.log()
-        })
-
+            fetch(`https://tinkerquest.onrender.com/api/inventory_items/${itemId}`, {
+                method: 'PUT', // Use PUT method to update existing item
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    quantity: currentQuantity // Send updated quantity to the API
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Quantity updated successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error updating quantity:', error);
+            });
+        }
     </script>
 </body>
 </html>
