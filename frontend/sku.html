@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKUs</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Threshold</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="fact-body"></tbody>
+    </table>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('https://tinkerquest.onrender.com/api/skus/')
+                .then(response => response.json())
+                .then(data => {
+                    populateTable(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching SKUs:', error);
+                });
+        });
+
+        function populateTable(skus) {
+            var tableBody = document.getElementById("fact-body");
+            tableBody.innerHTML = ""; // Clear existing rows
+
+            skus.forEach(function(sku) {
+                var row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${sku.id}</td>
+                    <td>${sku.name}</td>
+                    <td>${sku.threshold}</td>
+                    <td></td> <!-- Action column -->
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</body>
+</html>
