@@ -84,15 +84,23 @@ WSGI_APPLICATION = "Tinker.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'railway',
+#         'USER': 'postgres',
+#         'PASSWORD': 'GYKakoLMAgpxIruzPOvubNrvjPnngBOh',
+#         'HOST': 'viaduct.proxy.rlwy.net',
+#         'PORT': '59567',
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'GYKakoLMAgpxIruzPOvubNrvjPnngBOh',
-        'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': '59567',
-    }
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgres://tinker_db_user:fSczcHmnuUQd6FTdnGox9RERwEGdWNSb@dpg-cnosfefjbltc73fkpej0-a/tinker_db',
+        conn_max_age=600
+    )
 }
 
 
