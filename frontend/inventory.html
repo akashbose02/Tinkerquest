@@ -1,31 +1,36 @@
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Inventory Management</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
 </head>
 <body>
-    <div class="fact">
-        <button id="btn" class="fetch-btn">Show Inventory Items</button>
-        <table id="table-fact">
-            <thead id="fact-head"> 
-                <tr>
-                    <th>Id</th>
-                    <th>Quantity</th>
-                    <th>Storage</th>
-                    <th>Action</th> 
-                </tr>
-            </thead>
-            <tbody id="fact-body">
-            </tbody>
-        </table>
-    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Quantity</th>
+                <th>Location</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="fact-body"></tbody>
+    </table>
 
     <script>
-        document.getElementById("btn").addEventListener("click", function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            fetchInventoryItems();
+        });
+
+        function fetchInventoryItems() {
             fetch('https://tinkerquest.onrender.com/api/inventory_items')
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     populateTable(data);
                     console.log(data);
@@ -33,7 +38,7 @@
                 .catch(error => {
                     console.error('Error fetching inventory items:', error);
                 });
-        });
+        }
 
         function populateTable(inventoryItems) {
             var tableBody = document.getElementById("fact-body");
@@ -60,28 +65,33 @@
         }
 
         function incrementQuantity(itemId) {
+            var quantityElement = document.getElementById(`quantity-${itemId}`);
+            var currentQuantity = parseInt(quantityElement.textContent);
+            currentQuantity += 1;
+            quantityElement.textContent = currentQuantity;
+
             fetch(`https://tinkerquest.onrender.com/api/inventory_items/${itemId}`, {
-                method: 'POST', // Use PATCH method to update existing item
+                method: 'PUT', // Use PUT method to update existing item
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    quantity: 1 // Increment quantity by 1
+                    quantity: currentQuantity // Send updated quantity to the API
                 }),
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
-                // Update the quantity displayed on the page
-                var quantityElement = document.getElementById(`quantity-${itemId}`);
-                var currentQuantity = parseInt(quantityElement.textContent);
-                currentQuantity += 1;
-                quantityElement.textContent = currentQuantity;
+                console.log('Quantity updated successfully:', data);
             })
             .catch(error => {
-                console.error('Error incrementing quantity:', error);
+                console.error('Error updating quantity:', error);
             });
         }
     </script>
 </body>
 </html>
-
