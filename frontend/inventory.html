@@ -32,8 +32,8 @@
                     return response.json();
                 })
                 .then(data => {
+                    console.log('Fetched data:', data);
                     populateTable(data);
-                    console.log(data);
                 })
                 .catch(error => {
                     console.error('Error fetching inventory items:', error);
@@ -71,7 +71,7 @@
             quantityElement.textContent = currentQuantity;
 
             fetch(`https://tinkerquest.onrender.com/api/inventory_items/${itemId}`, {
-                method: 'PUT', // Use PUT method to update existing item
+                method: 'POST', // Use POST method for updating quantity
                 headers: {
                     'Content-Type': 'application/json',
                 },

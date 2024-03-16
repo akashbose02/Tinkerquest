@@ -147,7 +147,7 @@ input:focus {
     text-align: center;
 }
 
-.btn {
+#login-button {
     border: none;
     border-radius: 0.8rem;
     cursor: pointer;
@@ -166,3 +166,5 @@ input:focus {
 #signUp:hover {
     color: #8d68c5;
 }
+
+
