@@ -17,10 +17,47 @@ Go to `localhost:8000` to use the APIs
 BASE URL = https://tinkerquest.onrender.com/
 
 ### Available endpoints
-- dashboard/
-- signup/
-- login/
-- add-item/
-- edit-item/\<int:id>/
-- delete-item/\<int:id>/
+- dashboard/ `(GET)`
+- signup/ `(POST)`
+- login/ `(POST)`
+- add-item/ `(POST)`
+- edit-item/\<int:id>/ `(PUT)`
+- delete-item/\<int:id>/ `(DELETE)`
 
+### JSON Format Examples
+- signup/
+```JSON
+{
+    "password": "9j20hvj0W\tc",
+    "username": "debak",
+    "email": "debak@example.com",
+    "date_joined": "2024-16-03T12:00:00Z",
+    "password1": "9j20hvj0W\tc",
+    "password2": "9j20hvj0W\tc"
+}
+```
+- login/
+```JSON
+{
+    "password": "9j20hvj0W\tc",
+    "username": "debak",
+}
+```
+- add-item/
+```JSON
+{
+    "name": "PCR Reagents",
+    "quantity": 50,
+    "description": "Chemicals used in PCR tests to amplify and analyze DNA or RNA sequences.",
+    "date_created": "2024-03-16T07:38:07.236123+05:30",
+    "threshold": 10,
+    "location": "Laboratory"
+}
+```
+- edit-item/5/
+```JSON
+{
+    "threshold": 10,
+}
+```
+- delete-item/5/
