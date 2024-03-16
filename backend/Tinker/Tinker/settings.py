@@ -92,7 +92,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': os.getenv('PASSWORD'),
         'HOST': 'viaduct.proxy.rlwy.net',
-        'PORT': os.getenv('PORT'),
+        'PORT': '42711',
     }
 }
 
