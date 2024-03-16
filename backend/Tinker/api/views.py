@@ -1,66 +1,61 @@
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from base.models import SKU, InventoryItem, SalesOrder, StockMovement
-from .serializers import SKUSerializer, InventoryItemSerializer, SalesOrderSerializer, StockMovementSerializer
+from rest_framework.authtoken.models import Token
+from rest_framework import status
+from .serializers import InventoryItemSerializer
+from base.models import InventoryItem
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import authenticate, login
+from base.forms import UserRegisterForm
+from django.shortcuts import get_object_or_404
 
-# @api_view(['GET'])
-# def getAll(request):
-#     data = {
-#         "sku": getSKUData(),
-#         "inventoryItem": getInventoryItemData(),
-#         "salesOrder": getSalesOrderData(),
-#         "stockMovement": getStockMovementData(),
-#     }
-#     return Response(data)
+class DashboardAPI(APIView):
+    def get(self, request):
+        items = InventoryItem.objects.all()
+        serializer = InventoryItemSerializer(items, many=True)
+        return Response(serializer.data)
 
-@api_view(['GET'])
-def sku_list(request):
-    skuObj = SKU.objects.all()
-    serializerObj = SKUSerializer(skuObj, many=True)
-    return Response(serializerObj.data)
+class SignUpAPI(APIView):
+    def post(self, request):
+        form = UserRegisterForm(request.data)
+        if form.is_valid():
+            form.save()
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def sku_list(request):
-    serializerObj = SKUSerializer(data=request.data)
-    if(serializerObj.is_valid()):
-        serializerObj.save()
-    return Response(serializerObj.data)
+class LoginAPI(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
 
-@api_view(['GET'])
-def inventory_item_list(request):
-    iiObj = InventoryItem.objects.all()
-    serializerObj = InventoryItemSerializer(iiObj, many=True)
-    return Response(serializerObj.data)
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-@api_view(['POST'])
-def inventory_item_list(request):
-    serializerObj = InventoryItemSerializer(data=request.data)
-    if(serializerObj.is_valid()):
-        serializerObj.save()
-    return Response(serializerObj.data)
+class AddItemAPI(APIView):
+    def post(self, request):
+        serializer = InventoryItemSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET'])
-def sales_order_list(request):
-    soObj = SalesOrder.objects.all()
-    serializerObj = SalesOrderSerializer(soObj, many=True)
-    return Response(serializerObj.data)
+class EditItemAPI(APIView):
+    def put(self, request, pk):
+        item = get_object_or_404(InventoryItem, pk=pk)
+        serializer = InventoryItemSerializer(item, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-def sales_order_list(request):
-    serializerObj = SalesOrderSerializer(data=request.data)
-    if(serializerObj.is_valid()):
-        serializerObj.save()
-    return Response(serializerObj.data)
-
-@api_view(['GET'])
-def stock_movement_list(request):
-    smObj = StockMovement.objects.all()
-    serializerObj = StockMovementSerializer(smObj, many=True)
-    return Response(serializerObj.data)
-
-@api_view(['POST'])
-def stock_movement_list(request):
-    serializerObj = StockMovementSerializer(data=request.data)
-    if(serializerObj.is_valid()):
-        serializerObj.save()
-    return Response(serializerObj.data)
+class DeleteItemAPI(APIView):
+    def delete(self, request, pk):
+        item = get_object_or_404(InventoryItem, pk=pk)
+        item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

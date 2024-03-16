@@ -1,9 +1,11 @@
 from django.urls import path
-from . import views
+from .views import DashboardAPI, SignUpAPI, LoginAPI, AddItemAPI, EditItemAPI, DeleteItemAPI
 
 urlpatterns = [
-    path('skus/', views.sku_list, name="sku_list"),
-    path('inventory_items/', views.inventory_item_list, name="inventory_item_list"),
-    path('sales_orders/', views.sales_order_list, name="sales_order_list"),
-    path('stock_movements/', views.stock_movement_list, name="stock_movement_list"),
+    path('dashboard/', DashboardAPI.as_view(), name='dashboard_api'),
+    path('signup/', SignUpAPI.as_view(), name='signup_api'),
+     path('login/', LoginAPI.as_view(), name='login_api'),  
+    path('add-item/', AddItemAPI.as_view(), name='add_item_api'),
+    path('edit-item/<int:pk>/', EditItemAPI.as_view(), name='edit_item_api'),
+    path('delete-item/<int:pk>/', DeleteItemAPI.as_view(), name='delete_item_api'),
 ]
