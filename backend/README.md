@@ -40,7 +40,7 @@ BASE URL = https://tinkerquest.onrender.com/
 ```JSON
 {
     "password": "9j20hvj0W\tc",
-    "username": "debak",
+    "username": "debak"
 }
 ```
 - add-item/
