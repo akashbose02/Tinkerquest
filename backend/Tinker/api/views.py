@@ -1,12 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from rest_framework import status
 from .serializers import InventoryItemSerializer
-from base.models import InventoryItem
+from base.models import InventoryItem, User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login
-from base.forms import UserRegisterForm
 from django.shortcuts import get_object_or_404
 
 class DashboardAPI(APIView):
@@ -17,26 +15,37 @@ class DashboardAPI(APIView):
 
 class SignUpAPI(APIView):
     def post(self, request):
-        form = UserRegisterForm(request.data)
-        if form.is_valid():
-            form.save()
-            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-            return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
-        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+        username = request.data.get('username')
+        password = request.data.get('password')
+        email = request.data.get('email')
+        
+        if username and password and email:
+            user, created = User.objects.get_or_create(username=username, email=email)
+            if created:
+                user.set_password(password)
+                user.save()
+                return Response({"message": "User created"}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"error": "User already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({"error": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginAPI(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-
-        user = authenticate(username=username, password=password)
-        if user:
-            login(request, user)
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
+        
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return Response({'message': 'Login Successful'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'Missing username or password'}, status=status.HTTP_400_BAD_REQUEST)
 
+        
 class AddItemAPI(APIView):
     def post(self, request):
         serializer = InventoryItemSerializer(data=request.data)
