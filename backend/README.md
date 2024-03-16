@@ -25,13 +25,13 @@ BASE URL = https://tinkerquest.onrender.com/
 - delete-item/\<int:id>/ `(DELETE)`
 
 ### JSON Format Examples
-- signup/
+- signup/ (date format is YYYY-MM-DD)
 ```JSON
 {
     "password": "9j20hvj0W\tc",
     "username": "debak",
     "email": "debak@example.com",
-    "date_joined": "2024-16-03T12:00:00Z",
+    "date_joined": "2024-03-16",
     "password1": "9j20hvj0W\tc",
     "password2": "9j20hvj0W\tc"
 }
