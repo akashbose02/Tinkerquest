@@ -1,183 +1,63 @@
-# API Reference
+# Contents
+- [Run Locally](https://github.com/akashbose02/Tinkerquest/blob/main/backend/README.md#run-locally)
+- [API Reference](https://github.com/akashbose02/Tinkerquest/blob/main/backend/README.md#api-references)
 
-## Available Endpoints
-1. https://tinkerquest.onrender.com/api/skus
-2. https://tinkerquest.onrender.com/api/inventory_items
-3. https://tinkerquest.onrender.com/api/sales_orders
-4. https://tinkerquest.onrender.com/api/stock_movements
-
-## Examples
-
-### GET Request for `https://tinkerquest.onrender.com/api/skus`
-```JavaScript
-fetch('https://tinkerquest.onrender.com/api/skus', {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
-.then(response => response.json())
-.then(data => {
-  console.log('SKUs:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
+## Run Locally
+```shell
+# After cloning the project
+cd backend/Tinker
+pip install -r requirements.txt
+python manage.py runserver
 ```
 
-### POST Request for `https://tinkerquest.onrender.com/api/skus`
-```JavaScript
-const postData = {
-  name: 'Blood Test Kit',
-  description: 'Complete blood test kit including sample collection tubes, reagents, and instruction manual.',
-  threshold: 50
-};
+Go to `localhost:8000` to use the APIs
 
-fetch('https://tinkerquest.onrender.com/api/skus', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(postData)
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Response:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
+## API References
 
+BASE URL = https://tinkerquest.onrender.com/
+
+### Available endpoints
+- dashboard/ `(GET)`
+- signup/ `(POST)`
+- login/ `(POST)`
+- add-item/ `(POST)`
+- edit-item/\<int:id>/ `(PUT)`
+- delete-item/\<int:id>/ `(DELETE)`
+
+### JSON Format Examples
+- signup/ (date format is YYYY-MM-DD)
+```JSON
+{
+    "password": "9j20hvj0W\tc",
+    "username": "debak",
+    "email": "debak@example.com",
+    "date_joined": "2024-03-16",
+    "password1": "9j20hvj0W\tc",
+    "password2": "9j20hvj0W\tc"
+}
 ```
-<hr/>
-
-### GET Request for `https://tinkerquest.onrender.com/api/inventory_items`
-```JavaScript
-fetch('https://tinkerquest.onrender.com/api/inventory_items', {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Inventory Items:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
+- login/
+```JSON
+{
+    "password": "9j20hvj0W\tc",
+    "username": "debak"
+}
 ```
-
-### POST Request for `https://tinkerquest.onrender.com/api/inventory_items`
-```JavaScript
-const postData = {
-  sku: 1, // Replace with appropriate SKU ID
-  quantity: 100,
-  location: 'Storage Room A',
-  expiry_date: '2022-12-31' // Replace with appropriate expiry date
-};
-
-fetch('https://tinkerquest.onrender.com/api/inventory_items', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(postData)
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Response:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
+- add-item/
+```JSON
+{
+    "name": "PCR Reagents",
+    "quantity": 50,
+    "description": "Chemicals used in PCR tests to amplify and analyze DNA or RNA sequences.",
+    "date_created": "2024-03-16T07:38:07.236123+05:30",
+    "threshold": 10,
+    "location": "Laboratory"
+}
 ```
-<hr/>
-
-### GET Request for `https://tinkerquest.onrender.com/api/sales_orders`
-```JavaScript
-  fetch('https://tinkerquest.onrender.com/api/sales_orders', {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Sales Orders:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
+- edit-item/5/
+```JSON
+{
+    "threshold": 10,
+}
 ```
-
-### POST Request for `https://tinkerquest.onrender.com/api/sales_orders`
-```JavaScript
-const postData = {
-  items: [1, 2, 3], // Replace with appropriate Inventory Item IDs
-  total_amount: 500.00
-};
-
-fetch('https://tinkerquest.onrender.com/api/sales_orders', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(postData)
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Response:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
-```
-<hr/>
-
-### GET Request for `https://tinkerquest.onrender.com/api/stock_movements`
-```JavaScript
-fetch('https://tinkerquest.onrender.com/api/stock_movements', {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Stock Movements:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
-```
-
-### POST Request for `https://tinkerquest.onrender.com/api/stock_movements`
-```JavaScript
-const postData = {
-  item: 1, // Replace with appropriate Inventory Item ID
-  quantity_changed: -20
-};
-
-fetch('https://tinkerquest.onrender.com/api/stock_movements', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify(postData)
-})
-.then(response => response.json())
-.then(data => {
-  console.log('Response:', data);
-})
-.catch(error => {
-  console.error('Error:', error);
-});
-
-```
+- delete-item/5/
