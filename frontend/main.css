@@ -1,0 +1,105 @@
+/* hero section */
+
+.hero {
+    display: flex; 
+    height: 63vh; 
+  }
+  
+  .container1 {
+    display: flex; 
+    flex-wrap: nowrap; 
+    width: 100%; 
+    align-items: center; 
+    background-image: linear-gradient(rgb(95, 120, 244), rgb(219, 219, 228));
+  }
+
+  .hero-text h1 {
+    flex:2;
+    padding-left: 35px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #000080;
+    font-weight: 1200;
+    font-size: xx-large;
+   
+    
+  }
+  
+  .hero-text,p{
+    flex: 2; 
+    padding: 35px; 
+    font-family:cursive;
+    color: #9709f0; 
+    font-size: medium;
+    text-align: left; 
+    font-weight: 600;
+  }
+  
+  .hero-image {
+    flex: 1; 
+    background-position: center; 
+    background-size: cover; 
+    overflow: hidden;
+  }
+  
+  .hero-image-bg {
+    width: 100%;
+    height: 100%; 
+    opacity: 0.7; 
+    object-fit: cover; 
+  }
+  
+  .hero h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+  }
+  
+  .hero .btn {
+    
+    background-image: linear-gradient(rgb(233, 11, 245), rgb(243, 173, 231));
+    padding: 12px 35px;
+    color: #f8f3f3;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  /* inventory section */
+
+
+  .inventory-section {
+    display: flex;
+    height: 400px;
+    cursor: pointer;
+  }
+  
+  .inventory-image {
+    flex: 2;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+  }
+  
+  .inventory-text {
+    flex: 3;
+    padding: 50px;
+    color: #333;
+    text-align: left;
+  }
+  
+  .inventory-text h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .inventory-text p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  
