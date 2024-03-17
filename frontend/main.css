@@ -1,105 +1,143 @@
-/* hero section */
-
 .hero {
-    display: flex; 
-    height: 63vh; 
-  }
-  
-  .container1 {
-    display: flex; 
-    flex-wrap: nowrap; 
-    width: 100%; 
-    align-items: center; 
-    background-image: linear-gradient(rgb(95, 120, 244), rgb(219, 219, 228));
-  }
+  display: flex;
+  height: 63vh;
+}
 
-  .hero-text h1 {
-    flex:2;
-    padding-left: 35px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #000080;
-    font-weight: 1200;
-    font-size: xx-large;
-   
-    
-  }
-  
-  .hero-text,p{
-    flex: 2; 
-    padding: 35px; 
-    font-family:cursive;
-    color: #9709f0; 
-    font-size: medium;
-    text-align: left; 
-    font-weight: 600;
-  }
-  
-  .hero-image {
-    flex: 1; 
-    background-position: center; 
-    background-size: cover; 
-    overflow: hidden;
-  }
-  
-  .hero-image-bg {
-    width: 100%;
-    height: 100%; 
-    opacity: 0.7; 
-    object-fit: cover; 
-  }
-  
-  .hero h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
-  }
-  
-  .hero p {
-    font-size: 1.2em;
-    margin-bottom: 40px;
-  }
-  
-  .hero .btn {
-    
-    background-image: linear-gradient(rgb(233, 11, 245), rgb(243, 173, 231));
-    padding: 12px 35px;
-    color: #f8f3f3;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-  }
+.container1 {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  align-items: center;
+  background: rgb(227,155,66);
+background: linear-gradient(263deg, rgba(227,155,66,1) 0%, rgba(243,238,231,1) 35%, rgba(123,223,239,1) 100%);
+}
 
-  /* inventory section */
+.hero-text {
+  flex: 2;
+  margin-left: 35px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hero-text h1 {
+  font-size: xx-large;
+  color: #000080;
+  font-weight: 1200;
+  margin-bottom: 20px;
+}
+
+.hero-text p {
+  font-family: 'Times New Roman', Times, serif;
+  color: #9709f0;
+  font-size: medium;
+  text-align: left;
+  font-weight: 600;
+  margin-bottom: 40px;
+  padding-left: 0;
+}
+
+.hero-image {
+  flex: 1;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.hero-image-bg {
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  object-fit: cover;
+}
+
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-size: 1.2em;
+  margin-bottom: 40px;
+}
+
+.hero .btn {
+  background-image: linear-gradient(rgb(54, 236, 54),rgb(63, 223, 63));
+  padding: 12px 35px;
+  color: #f8f3f3;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.inventory-section {
+  display: flex;
+  height: fit-content;
+  cursor: pointer;
+  /* background-image: linear-gradient(rgb(230, 136, 220),rgb(240, 231, 239)); */
+}
+
+.inventory-image {
+  flex: 2;
+  background-position: center;
+  background-size: cover;
+  overflow: hidden;
+}
+
+.inventory-text {
+  flex: 3;
+  padding: 50px;
+  text-align: left;
+ 
+}
+
+.inventory-text h2 {
+  color: #191928;
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.inventory-text p {
+  color: #1a2656;
+  font-size: 22px;
+  line-height: 1.5;
+  font-family: 'Times New Roman', Times, serif;
+}
 
 
-  .inventory-section {
-    display: flex;
-    height: 400px;
-    cursor: pointer;
-  }
-  
-  .inventory-image {
-    flex: 2;
-    background-position: center;
-    background-size: cover;
-    overflow: hidden;
-  }
-  
-  .inventory-text {
-    flex: 3;
-    padding: 50px;
-    color: #333;
-    text-align: left;
-  }
-  
-  .inventory-text h2 {
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
-  
-  .inventory-text p {
-    font-size: 16px;
-    line-height: 1.5;
-  }
-  
-  
+
+.Report {
+  display: flex;
+  height: fit-content;
+  cursor: pointer;
+  /* background-image: linear-gradient(rgb(132, 219, 239), rgb(229, 235, 240)); */
+}
+
+.report.text-text {
+  flex: 3;
+  padding: 50px;
+  text-align: left;
+}
+
+.report.text-text h2 {
+  color: #191928;
+  font-size: 3em;
+  margin-bottom: 20px;
+}
+
+.report.text-text p {
+  color: #1a2656;
+  font-size: 22px;
+  line-height: 1.5;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.report-image {
+  flex: 2;
+  background-position: center;
+  background-size: cover;
+}
+
+.report-image img {
+  width: 100%;
+  height: auto;
+}
