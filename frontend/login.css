@@ -13,11 +13,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #012727;
+    background-color: #ffffff;
 }
 
 .container {
-    background-color: #fdfdf6;
+    background-color: #ffffff;
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -120,27 +120,6 @@ input:focus {
     justify-content: center;
     align-items: center;
 }
-/* 
-.fa-brands {
-    margin-top: 1rem;
-    cursor: pointer;
-    color: white;
-    padding: 0.5rem;
-    border-radius: 50%;
-} */
-/* 
-.fa-google {
-    background-color: orangered;
-}
-
-.fa-twitter {
-    background-color: rgb(43, 71, 228);
-}
-
-.fa-facebook-f {
-    background-color: darkblue;
-} */
-
 
 /* Utility Classes */
 .t-center {
@@ -148,16 +127,22 @@ input:focus {
 }
 
 #login-button {
+    /* border: none; */
+    background-color: #4CAF50; /* Green */
     border: none;
+    color: white;
     border-radius: 0.8rem;
     cursor: pointer;
     padding: 0.7rem 0.8rem;
-    background: linear-gradient(to right, #8d68c5, #e34494);
+    /* background: linear-gradient(to right, #8d68c5, #e34494); */
     margin-top: 2rem;
     margin-bottom: 3rem;
-    color: #fffebd;
+    /* color: #fffebd; */
 }
 
+#login-button:hover {
+    background-color: #45a049; /* Darker shade of green on hover */
+}
 #signUp {
     font-size: 1rem;
     cursor: pointer;
