@@ -76,7 +76,6 @@
                     <div>Quantity: <span id="quantity-${item.id}">${item.quantity}</span></div>
                     <div>Threshold: ${item.threshold}</div>
                     <div>Location: ${item.location}</div>
-                    <div>Description: <span id="description-${item.id}">${item.description}</span></div>
                 `;
                 card.appendChild(cardBody);
 
@@ -160,14 +159,14 @@
         function decrementQuantity(itemId) {
             var quantityElement = document.getElementById(`quantity-${itemId}`);
             var currentQuantity = parseInt(quantityElement.textContent);
-            var threshold = parseInt(quantityElement.parentElement.querySelector(".card-body > div:nth-child(2)").textContent);
+            //var threshold = parseInt(quantityElement.parentElement.querySelector(".card-body > div:nth-child(2)").textContent);
             if (currentQuantity > 0) {
                 currentQuantity -= 1;
                 quantityElement.textContent = currentQuantity;
 
-                if (currentQuantity < threshold) {
-                    alert(`Alert: ${quantityElement.parentElement.querySelector(".card-header").textContent} inventory needs refilling.`);
-                }
+                // if (currentQuantity < threshold) {
+                //     alert(`Alert: ${quantityElement.parentElement.querySelector(".card-header").textContent} inventory needs refilling.`);
+                // }
 
                 updateQuantity(`https://tinkerquest.onrender.com/edit-item/${itemId}/`, currentQuantity);
             } else {
@@ -315,6 +314,7 @@
     </script>
 </body>
 </html>
+
 
 
 
