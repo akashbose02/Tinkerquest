@@ -10,13 +10,16 @@
         <thead>
             <tr>
                 <th>ID</th>
+                <th>Name</th>
                 <th>Quantity</th>
+                <th>Threshold</th>
                 <th>Location</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody id="fact-body"></tbody>
     </table>
+    <button id="add-item-btn">Add Item</button>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -24,7 +27,7 @@
         });
 
         function fetchInventoryItems() {
-            fetch('https://tinkerquest.onrender.com/api/inventory_items')
+            fetch('https://tinkerquest.onrender.com/dashboard/')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -41,6 +44,9 @@
         }
 
         function populateTable(inventoryItems) {
+            // Sort inventory items by ID in ascending order
+            inventoryItems.sort((a, b) => a.id - b.id);
+
             var tableBody = document.getElementById("fact-body");
             tableBody.innerHTML = ""; // Clear existing rows
 
@@ -48,9 +54,16 @@
                 var row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${item.id}</td>
+                    <td>${item.name}</td>
                     <td id="quantity-${item.id}">${item.quantity}</td>
+                    <td>${item.threshold}</td>
                     <td>${item.location}</td>
-                    <td><button class="add-btn" data-id="${item.id}">Add</button></td>
+                    <td>
+                        <button class="add-btn" data-id="${item.id}">Add</button>
+                        <button class="use-btn" data-id="${item.id}">Use</button>
+                        <button class="edit-btn" data-id="${item.id}">Edit</button>
+                        <button class="delete-btn" data-id="${item.id}">Delete</button>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });
@@ -62,6 +75,27 @@
                     incrementQuantity(itemId);
                 });
             });
+
+            document.querySelectorAll(".use-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    var itemId = button.getAttribute("data-id");
+                    decrementQuantity(itemId);
+                });
+            });
+
+            document.querySelectorAll(".edit-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    var itemId = button.getAttribute("data-id");
+                    editItem(itemId);
+                });
+            });
+
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", () => {
+                    var itemId = button.getAttribute("data-id");
+                    deleteItem(itemId);
+                });
+            });
         }
 
         function incrementQuantity(itemId) {
@@ -70,15 +104,34 @@
             currentQuantity += 1;
             quantityElement.textContent = currentQuantity;
 
-            fetch(`https://tinkerquest.onrender.com/api/inventory_items/${itemId}`, {
-                method: 'POST', // Use POST method for updating quantity
+            updateQuantity(`https://tinkerquest.onrender.com/edit-item/${itemId}/`, currentQuantity);
+        }
+
+        function decrementQuantity(itemId) {
+            var quantityElement = document.getElementById(`quantity-${itemId}`);
+            var currentQuantity = parseInt(quantityElement.textContent);
+            if (currentQuantity > 0) {
+                currentQuantity -= 1;
+                quantityElement.textContent = currentQuantity;
+
+                updateQuantity(`https://tinkerquest.onrender.com/edit-item/${itemId}/`, currentQuantity);
+            } else {
+                console.log("Quantity cannot be negative.");
+            }
+        }
+
+        function updateQuantity(apiUrl, newQuantity) {
+            const options = {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    quantity: currentQuantity // Send updated quantity to the API
+                    quantity: newQuantity // Update quantity in the API
                 }),
-            })
+            };
+
+            fetch(apiUrl, options)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -92,6 +145,133 @@
                 console.error('Error updating quantity:', error);
             });
         }
+
+        function editItem(itemId) {
+            var attribute = prompt("Enter the attribute to edit (Name, Quantity, Threshold, Location):");
+            if (attribute) {
+                var newValue = prompt("Enter the new value:");
+                if (newValue) {
+                    updateAttribute(`https://tinkerquest.onrender.com/edit-item/${itemId}/`, attribute, newValue);
+                }
+            }
+        }
+
+        function updateAttribute(apiUrl, attribute, newValue) {
+            const options = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    [attribute.toLowerCase()]: newValue // Update the specified attribute in the API
+                }),
+            };
+
+            fetch(apiUrl, options)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(`${attribute} updated successfully:`, data);
+                fetchInventoryItems(); // Refresh the table after updating item
+            })
+            .catch(error => {
+                console.error(`Error updating ${attribute}:`, error);
+            });
+        }
+
+        function deleteItem(itemId) {
+            var confirmation = confirm("Are you sure you want to delete item with ID: " + itemId);
+            if (confirmation) {
+                fetch(`https://tinkerquest.onrender.com/delete-item/${itemId}/`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Check if the response is not empty
+                    if (response.status === 204) {
+                        // No content in response, deletion successful
+                        console.log('Item deleted successfully');
+                        // Remove the row from the table
+                        document.getElementById("fact-body").querySelector(`[data-id="${itemId}"]`).closest("tr").remove();
+                    } else {
+                        // Parse the response as JSON
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    // Handle response data if present
+                    if (data) {
+                        console.log('Error deleting item:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting item:', error);
+                });
+            }
+        }
+
+        document.getElementById("add-item-btn").addEventListener("click", function() {
+            var uniqueId = false;
+            var itemId;
+            while (!uniqueId) {
+                itemId = prompt("Enter the ID of the item:");
+                // Check if the entered ID is unique
+                uniqueId = isUniqueId(itemId);
+                if (!uniqueId) {
+                    alert("This ID is already allocated. Please enter a different ID.");
+                }
+            }
+            var itemName = prompt("Enter the name of the item:");
+            if (itemId && itemName) {
+                fetch('https://tinkerquest.onrender.com/add-item/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: itemId,
+                        name: itemName,
+                    }),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Item added successfully:', data);
+                    fetchInventoryItems(); // Refresh the table after adding item
+                })
+                .catch(error => {
+                    console.error('Error adding item:', error);
+                });
+            }
+        });
+
+        function isUniqueId(itemId) {
+            var rows = document.querySelectorAll("#fact-body tr");
+            for (var i = 0; i < rows.length; i++) {
+                var rowId = rows[i].querySelector("td:first-child").textContent;
+                if (rowId === itemId) {
+                    return false;
+                }
+            }
+            return true;
+        }
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
