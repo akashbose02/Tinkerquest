@@ -9,7 +9,6 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Quantity</th>
                 <th>Threshold</th>
@@ -53,7 +52,6 @@
             inventoryItems.forEach(function(item) {
                 var row = document.createElement("tr");
                 row.innerHTML = `
-                    <td>${item.id}</td>
                     <td>${item.name}</td>
                     <td id="quantity-${item.id}">${item.quantity}</td>
                     <td>${item.threshold}</td>
@@ -217,18 +215,10 @@
         }
 
         document.getElementById("add-item-btn").addEventListener("click", function() {
-            var uniqueId = false;
-            var itemId;
-            while (!uniqueId) {
-                itemId = prompt("Enter the ID of the item:");
-                // Check if the entered ID is unique
-                uniqueId = isUniqueId(itemId);
-                if (!uniqueId) {
-                    alert("This ID is already allocated. Please enter a different ID.");
-                }
-            }
             var itemName = prompt("Enter the name of the item:");
-            if (itemId && itemName) {
+            if (itemName) {
+                // Generate a unique ID (here I'm just using a timestamp)
+                var itemId = Date.now().toString();
                 fetch('https://tinkerquest.onrender.com/add-item/', {
                     method: 'POST',
                     headers: {
@@ -268,6 +258,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
