@@ -4,20 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
+    <style>
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .card-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .card-body {
+            display: flex;
+            flex-direction: column;
+        }
+        .card-actions {
+            margin-top: 10px;
+        }
+        button {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Threshold</th>
-                <th>Location</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="fact-body"></tbody>
-    </table>
+    <div class="card-container" id="fact-body"></div>
     <button id="add-item-btn">Add Item</button>
 
     <script>
@@ -35,35 +50,47 @@
                 })
                 .then(data => {
                     console.log('Fetched data:', data);
-                    populateTable(data);
+                    populateCards(data);
                 })
                 .catch(error => {
                     console.error('Error fetching inventory items:', error);
                 });
         }
 
-        function populateTable(inventoryItems) {
-            // Sort inventory items by ID in ascending order
-            inventoryItems.sort((a, b) => a.id - b.id);
-
-            var tableBody = document.getElementById("fact-body");
-            tableBody.innerHTML = ""; // Clear existing rows
+        function populateCards(inventoryItems) {
+            var cardContainer = document.getElementById("fact-body");
+            cardContainer.innerHTML = ""; // Clear existing cards
 
             inventoryItems.forEach(function(item) {
-                var row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${item.name}</td>
-                    <td id="quantity-${item.id}">${item.quantity}</td>
-                    <td>${item.threshold}</td>
-                    <td>${item.location}</td>
-                    <td>
-                        <button class="add-btn" data-id="${item.id}">Add</button>
-                        <button class="use-btn" data-id="${item.id}">Use</button>
-                        <button class="edit-btn" data-id="${item.id}">Edit</button>
-                        <button class="delete-btn" data-id="${item.id}">Delete</button>
-                    </td>
+                var card = document.createElement("div");
+                card.className = "card";
+
+                var cardHeader = document.createElement("div");
+                cardHeader.className = "card-header";
+                cardHeader.textContent = item.name;
+                card.appendChild(cardHeader);
+
+                var cardBody = document.createElement("div");
+                cardBody.className = "card-body";
+                cardBody.innerHTML = `
+                    <div>Quantity: <span id="quantity-${item.id}">${item.quantity}</span></div>
+                    <div>Threshold: ${item.threshold}</div>
+                    <div>Location: ${item.location}</div>
+                    <div>Description: <span id="description-${item.id}">${item.description}</span></div>
                 `;
-                tableBody.appendChild(row);
+                card.appendChild(cardBody);
+
+                var cardActions = document.createElement("div");
+                cardActions.className = "card-actions";
+                cardActions.innerHTML = `
+                    <button class="add-btn" data-id="${item.id}">Add</button>
+                    <button class="use-btn" data-id="${item.id}">Use</button>
+                    <button class="edit-btn" data-id="${item.id}">Edit</button>
+                    <button class="delete-btn" data-id="${item.id}">Delete</button>
+                `;
+                card.appendChild(cardActions);
+
+                cardContainer.appendChild(card);
             });
 
             // Add event listeners to the newly created buttons
@@ -94,6 +121,31 @@
                     deleteItem(itemId);
                 });
             });
+
+            // Add event listeners to item names to fetch description
+            document.querySelectorAll(".card-header").forEach(itemName => {
+                itemName.addEventListener("click", () => {
+                    var itemId = itemName.nextElementSibling.querySelector("button").getAttribute("data-id");
+                    fetchItemDescription(itemId);
+                });
+            });
+        }
+
+        function fetchItemDescription(itemId) {
+            fetch(`https://tinkerquest.onrender.com/dashboard/${itemId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched description:', data.description);
+                    alert(`Description: ${data.description}`);
+                })
+                .catch(error => {
+                    console.error('Error fetching description:', error);
+                });
         }
 
         function incrementQuantity(itemId) {
@@ -108,9 +160,14 @@
         function decrementQuantity(itemId) {
             var quantityElement = document.getElementById(`quantity-${itemId}`);
             var currentQuantity = parseInt(quantityElement.textContent);
+            var threshold = parseInt(quantityElement.parentElement.querySelector(".card-body > div:nth-child(2)").textContent);
             if (currentQuantity > 0) {
                 currentQuantity -= 1;
                 quantityElement.textContent = currentQuantity;
+
+                if (currentQuantity < threshold) {
+                    alert(`Alert: ${quantityElement.parentElement.querySelector(".card-header").textContent} inventory needs refilling.`);
+                }
 
                 updateQuantity(`https://tinkerquest.onrender.com/edit-item/${itemId}/`, currentQuantity);
             } else {
@@ -174,7 +231,7 @@
             })
             .then(data => {
                 console.log(`${attribute} updated successfully:`, data);
-                fetchInventoryItems(); // Refresh the table after updating item
+                fetchInventoryItems(); // Refresh the cards after updating item
             })
             .catch(error => {
                 console.error(`Error updating ${attribute}:`, error);
@@ -195,8 +252,8 @@
                     if (response.status === 204) {
                         // No content in response, deletion successful
                         console.log('Item deleted successfully');
-                        // Remove the row from the table
-                        document.getElementById("fact-body").querySelector(`[data-id="${itemId}"]`).closest("tr").remove();
+                        // Remove the card from the container
+                        document.getElementById("fact-body").querySelector(`[data-id="${itemId}"]`).remove();
                     } else {
                         // Parse the response as JSON
                         return response.json();
@@ -237,7 +294,7 @@
                 })
                 .then(data => {
                     console.log('Item added successfully:', data);
-                    fetchInventoryItems(); // Refresh the table after adding item
+                    fetchInventoryItems(); // Refresh the cards after adding item
                 })
                 .catch(error => {
                     console.error('Error adding item:', error);
@@ -246,10 +303,10 @@
         });
 
         function isUniqueId(itemId) {
-            var rows = document.querySelectorAll("#fact-body tr");
-            for (var i = 0; i < rows.length; i++) {
-                var rowId = rows[i].querySelector("td:first-child").textContent;
-                if (rowId === itemId) {
+            var cards = document.querySelectorAll(".card");
+            for (var i = 0; i < cards.length; i++) {
+                var cardId = cards[i].querySelector(".card-header").getAttribute("data-id");
+                if (cardId === itemId) {
                     return false;
                 }
             }
@@ -258,11 +315,6 @@
     </script>
 </body>
 </html>
-
-
-
-
-
 
 
 
