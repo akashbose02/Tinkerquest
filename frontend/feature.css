@@ -1,0 +1,37 @@
+.message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2%;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    font-family: sans-serif;
+    z-index: 100;
+    text-align: center;
+    display: flex; /* Make the message a flexbox container */
+    flex-direction: column; /* Arrange elements vertically */
+    align-items: center; /* Center elements horizontally */
+    line-height: 1.5;
+  }
+  
+  .message button.ok-button {
+    background-color: #2a352a;
+    border: none;
+    border-radius: 4%;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 10px; /* Add margin top for spacing */
+  }
+  
+  .message button.ok-button:hover {
+    background-color: #3e8e41;
+  }
+  
