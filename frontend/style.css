@@ -88,6 +88,87 @@
 .fetch-btn{
     color: black;
 }
+/*------------------hero section start---------------*/
+
+  
+  .main-content {
+    padding: 20px;
+  }
+  
+ .hero {
+  padding: 50px; /* Add some padding for content */
+}
+
+.hero-container {
+  display: flex; /* Use Flexbox for side-by-side layout */
+}
+
+.hero-container video {
+  width: 50%; /* Set video width */
+  height: 100%; /* Ensure video fills container height */
+  object-fit: cover; /* Stretch video to cover container */
+}
+
+.hero-content {
+  width: 50%; /* Set text content width */
+  background-color: white; /* Optional semi-transparent background */
+  color: rgb(8, 8, 8); /* Set text color for contrast */
+  padding: 20px; /* Add some padding within text content */
+  text-align: left; /* Align text left within content area */
+}
+
+  .hero h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+  
+  .hero p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  
+  .hero-button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+  }
+  
+  /* Info boxes section styles */
+  .info-boxes {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allow boxes to wrap to next line */
+    margin-bottom: 50px;
+  }
+  
+  .info-box {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Add rounded corners */
+    margin: 10px;
+    width: calc(33% - 20px); /* Calculate width based on 3 columns */
+  }
+  
+  .info-box i {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #4CAF50; /* Green */
+  }
+  
+  .info-box h3 {
+    font-size: 20px;
+    margin-bottom: 5px;
+  }
+  
+  .info-box p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+/*------------------hero section ends----------------*/
 /* --------------FOOTER STARTS---------------------- */
 
   @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,500,300,700);
