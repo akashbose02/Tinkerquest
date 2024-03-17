@@ -120,15 +120,15 @@ input:focus {
     justify-content: center;
     align-items: center;
 }
-
+/* 
 .fa-brands {
     margin-top: 1rem;
     cursor: pointer;
     color: white;
     padding: 0.5rem;
     border-radius: 50%;
-}
-
+} */
+/* 
 .fa-google {
     background-color: orangered;
 }
@@ -139,7 +139,7 @@ input:focus {
 
 .fa-facebook-f {
     background-color: darkblue;
-}
+} */
 
 
 /* Utility Classes */

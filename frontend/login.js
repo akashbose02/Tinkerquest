@@ -19,7 +19,7 @@ function login() {
   .then(response => {
     if (response.ok) {
       // Successful login
-      window.location.href = 'https://chat.openai.com/'; // Redirect to desired page
+      window.location.href = 'index.html'; // Redirect to desired page
     } else {
       // Failed login
       alert("Invalid username or password");
@@ -29,6 +29,12 @@ function login() {
     console.error('Error:', error);
     alert("An error occurred during login");
   });
+}
+
+// --------SIGNUP-------------
+
+function signup(){
+  
 }
 
 // Attach event listener to the login button
