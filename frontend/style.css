@@ -93,6 +93,9 @@
   
   .main-content {
     padding: 20px;
+    
+    background: rgb(255,255,255);
+background: linear-gradient(141deg, rgba(255,255,255,1) 8%, rgba(255,240,138,1) 57%, rgba(217,155,246,1) 89%);
   }
   
  .hero {
@@ -111,7 +114,9 @@
 
 .hero-content {
   width: 50%; /* Set text content width */
-  background-color: white; /* Optional semi-transparent background */
+  /* background-color: white; Optional semi-transparent background */
+  background: rgb(255,255,255);
+background: linear-gradient(141deg, rgba(255,255,255,1) 8%, rgba(255,240,138,1) 57%, rgba(217,155,246,1) 89%);
   color: rgb(8, 8, 8); /* Set text color for contrast */
   padding: 20px; /* Add some padding within text content */
   text-align: left; /* Align text left within content area */
@@ -133,6 +138,7 @@
     border: none;
     color: white;
     padding: 10px 20px;
+    align-items: center;
   }
   
   /* Info boxes section styles */
