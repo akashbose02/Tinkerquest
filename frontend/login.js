@@ -19,7 +19,7 @@ function login() {
   .then(response => {
     if (response.ok) {
       // Successful login
-      window.location.href = 'index.html'; // Redirect to desired page
+      window.location.href = 'main.html'; // Redirect to desired page
     } else {
       // Failed login
       alert("Invalid username or password");
